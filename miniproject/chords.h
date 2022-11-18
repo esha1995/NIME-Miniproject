@@ -61,8 +61,6 @@ const int Gminor[6] = {NOTE_G2, NOTE_D3, NOTE_G3, NOTE_As3,NOTE_D3, NOTE_G4};  /
 const int Aminor[6] = {      0, NOTE_A2, NOTE_E3, NOTE_A3, NOTE_C4, NOTE_E4};  // A - C - E
 const int Bminor[6] = {      0, NOTE_B2, NOTE_Fs3,NOTE_B3, NOTE_D4, NOTE_Fs4}; // B - D - F#
 
-const int majorChords[ 6 ][ 12 ] = {Cmajor, Csmajor, Dmajor, Dsmajor, Emajor, Fmajor, Fsmajor, Gmajor, Gsmajor, Amajor, Asmajor, Bmajor};
-
 //                   E2, F2, F2#, G2, G2#, A2, A2#, B2
 // C3, C3#, D3, D3#, E3, F3, F3#, G3, G3#, A3, A3#, B3
 // C4, C4#, D4, D4#, E4, F4, F4#, G4, G4#, A4, A4#, B4
