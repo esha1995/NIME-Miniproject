@@ -21,6 +21,12 @@ int row2 = numKeys - 2;
 int row3 = numKeys - 3;
 int row4 = numKeys - 4;
 
+bool changeChord = false;
+bool majorMinor = true;
+
+int scale = 0;
+
+int mapping[16] = {15, 11, 7, 3,14,10,6,2,13,9,5,1,12,8,4,0}; 
 
 void setup() {
   Serial.begin(9600);
@@ -45,54 +51,127 @@ void setup() {
 void loop() {
   delay(30);
     // If a button was just pressed or released...
-    int j = 0;
-    
+
+    trellis.setLED(12);
     if (trellis.readSwitches()) {
       // go through every button
-      for (uint8_t i=0; i<numKeys; i++) 
-      {
-        
-        if (trellis.justPressed(i))
-         {
-          Serial.println(i);
-          usbMIDI.sendNoteOn(60 + i, 100, channel);
-          trellis.setLED(i);
-         } 
-          // if it was released, turn it off
-        if (trellis.justReleased(i)) 
-        {
-          usbMIDI.sendNoteOff(60 + i, 0, channel);
-          trellis.clrLED(i);
+
+      for (uint8_t i=0; i<numKeys; i++) {
+        if(i == 12) {
+          if(trellis.justPressed(mapping[12]) && changeChord == false) {
+            changeChord = true;
+          } 
+          else if(trellis.justPressed(mapping[12]) && changeChord == true) {
+            changeChord = false;
+          }
+        } 
+        else if(i == 8) {
+          if(trellis.justPressed(mapping[13]) && majorMinor == false) {
+            majorMinor = true; 
+          } 
+          
+          else if(trellis.justPressed(mapping[13]) && majorMinor == true) {
+              majorMinor = false;
+          }
         }
-
-        j++;
+        else {
+          // if in change scale mode
+          if(changeChord) {
+              if(mapping[i] != mapping[14] && mapping[i] != mapping[15]) {
+                  trellis.setLED(mapping[i]);
+                  if(trellis .justPressed(mapping[i])) {
+                    scale = i;
+                    changeChord = false;
+                    Serial.println(i);
+                  }
+              }
+           }
+           else {
+            trellis.clrLED(mapping[i]);
+            if (trellis.justPressed(mapping[i])) {
+              Serial.println(i);
+              playChord(selectChord(i, 100, majorMinor, scale));
+              trellis.setLED(mapping[i]);
+             } 
+              // if it was released, turn it off
+            if (trellis.justReleased(mapping[i])) {
+              stopChord(selectChord(i, 100, majorMinor, scale));
+              trellis.clrLED(mapping[i]);
+            }
+          }
+        }
       }
-      // tell the trellis to set the LEDs we requested
-      trellis.writeDisplay();
+     }
+     
+    if(majorMinor) {
+      trellis.setLED(mapping[13]);
     }
-}
+    else{
+      trellis.clrLED(mapping[13]);
+    }
+     
+    
+    trellis.writeDisplay();
+  }
 
 
-void majorChord(int i, float velocity)
-{
+int * selectChord(int i, float velocity, bool isMajor, int scale) {
   int *chord;
-  
-  if(i == row1) chord = Cmajor;
-  if(i == row1 - 4) chord = Csmajor;
-  if(i == row1 - (4*2)) chord = Dmajor;
-  if(i == row1 - (4*3)) chord = Dsmajor;
+  if (isMajor) {
+        if (scale == 0 ) {
+        // First row
+        if(i == 0) chord = Cmaj;
+        if(i == 1) chord = Dmin;
+        if(i == 2) chord = Emin;
+        if(i == 3) chord = Fmaj;
+        
+        // Second row
+        if(i == 4) chord = Gmin;
+        if(i == 5) chord = Amin;
+        if(i == 6) chord = Bdim;
+      }
 
-  if(i == row1) chord = Cmajor;
-  if(i == row1 - 4) chord = Csmajor;
-  if(i == row1 - (4*2)) chord = Dmajor;
-  if(i == row1 - (4*3)) chord = Dsmajor;  
-
-
+      if (scale == 1 ) {
+        // First row
+        if(i == 0) chord = Csmaj;
+        if(i == 1) chord = Dsmin;
+        if(i == 2) chord = Fmin;
+        if(i == 3) chord = Fsmaj;
+        
+        // Second row
+        if(i == 4) chord = Gsmin;
+        if(i == 5) chord = Asmin;
+        if(i == 6) chord = Cdim;
+      }
+  } else {
+      // C Minor
+      if (scale == 0) {
+        // First row
+        if(i == 0) chord = Cmin;
+        if(i == 1) chord = Dmin;
+        if(i == 2) chord = Emin;
+        if(i == 3) chord = Fmaj;
+        
+        // Second row
+        if(i == 4) chord = Gmin;
+        if(i == 5) chord = Amin;
+        if(i == 6) chord = Bdim;
+      }
+  }
   
-  
+  return chord;
 }
 
-void stopChord(int i)
+void playChord(int *chord) 
 {
+  usbMIDI.sendNoteOn(chord[0], 100, channel);
+  usbMIDI.sendNoteOn(chord[1], 100, channel);
+  usbMIDI.sendNoteOn(chord[2], 100, channel);
+}
 
+void stopChord(int *chord) 
+{
+  usbMIDI.sendNoteOff(chord[0], 100, channel);
+  usbMIDI.sendNoteOff(chord[1], 100, channel);
+  usbMIDI.sendNoteOff(chord[2], 100, channel);
 }
