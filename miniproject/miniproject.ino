@@ -2,30 +2,21 @@
 #include "chords.h"
 #include <Wire.h>
 #include "Adafruit_Trellis.h"
-int channel = 1;
-float finger_delay = 10;
-
-
-Adafruit_Trellis matrix0 = Adafruit_Trellis();
-
-Adafruit_TrellisSet trellis =  Adafruit_TrellisSet(&matrix0);
 
 #define NUMTRELLIS 1
-
 #define numKeys (NUMTRELLIS * 16)
-
 #define INTPIN A2
 
-int row1 = numKeys - 1;
-int row2 = numKeys - 2;
-int row3 = numKeys - 3;
-int row4 = numKeys - 4;
+Adafruit_Trellis matrix0 = Adafruit_Trellis();
+Adafruit_TrellisSet trellis =  Adafruit_TrellisSet(&matrix0);
+
+int channel = 1;
+float finger_delay = 10;
 
 bool changeChord = false;
 bool majorMinor = true;
 
 int scale = 0;
-
 int mapping[16] = {15, 11, 7, 3,14,10,6,2,13,9,5,1,12,8,4,0}; 
 
 void setup() {
