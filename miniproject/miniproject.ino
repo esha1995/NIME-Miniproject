@@ -21,6 +21,12 @@ int row2 = numKeys - 2;
 int row3 = numKeys - 3;
 int row4 = numKeys - 4;
 
+boolean changeChord = false;
+boolean majorMinor = true;
+
+int scale = 0;
+
+int mapping[16] = {15, 11, 7, 3,14,10,6,2,13,9,5,1,12,8,4,0}; 
 
 void setup() {
   Serial.begin(9600);
@@ -45,32 +51,73 @@ void setup() {
 void loop() {
   delay(30);
     // If a button was just pressed or released...
-    int j = 0;
-    
+
+    trellis.setLED(12);
     if (trellis.readSwitches()) {
       // go through every button
+
+      
       for (uint8_t i=0; i<numKeys; i++) 
       {
-        
-        if (trellis.justPressed(i))
-         {
-          Serial.println(i);
-          usbMIDI.sendNoteOn(60 + i, 100, channel);
-          trellis.setLED(i);
-         } 
-          // if it was released, turn it off
-        if (trellis.justReleased(i)) 
-        {
-          usbMIDI.sendNoteOff(60 + i, 0, channel);
-          trellis.clrLED(i);
-        }
 
-        j++;
+        if(i == 12) 
+        {
+          if(trellis.justPressed(mapping[12]) && changeChord == false){
+            changeChord = true;
+            }
+            
+          else if(trellis.justPressed(mapping[12]) && changeChord == true){
+            changeChord = false;
+           }
+         }
+         else if(i == 8)
+         {
+          if(trellis.justPressed(mapping[13]) && majorMinor == false)
+          {
+            majorMinor = true; 
+          }
+          else if(trellis.justPressed(mapping[13]) && majorMinor == true)
+          {
+           majorMinor = false;
+          }
+         }
+
+         
+        else{
+          // if in change scale mode
+          if(changeChord){
+              if(mapping[i] != mapping[14] && mapping[i] != mapping[15]){
+                  trellis.setLED(mapping[i]);
+                  if(trellis .justPressed(mapping[i]))
+                  {
+                    scale = i;
+                    Serial.println(i);
+                  }
+                }
+           }
+           else{
+            trellis.clrLED(mapping[i]);
+            if (trellis.justPressed(mapping[i]))
+               {
+                Serial.println(i);
+                usbMIDI.sendNoteOn(60 + i, 100, channel);
+                trellis.setLED(mapping[i]);
+               } 
+                // if it was released, turn it off
+              if (trellis.justReleased(mapping[i])) 
+              {
+                usbMIDI.sendNoteOff(60 + i, 0, channel);
+                trellis.clrLED(mapping[i]);
+              }
+            }
+        }
       }
-      // tell the trellis to set the LEDs we requested
-      trellis.writeDisplay();
-    }
-}
+     }
+
+    if(majorMinor) trellis.setLED(mapping[13]);
+    else trellis.clrLED(mapping[13]);
+    trellis.writeDisplay();
+  }
 
 
 void majorChord(int i, float velocity)
