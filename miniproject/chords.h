@@ -40,14 +40,14 @@
 //
               // open =  NOTE_E2  NOTE_A2  NOTE_D3  NOTE_G3  NOTE_B3  NOTE_E4
 int Cmajor[6] = {      0, NOTE_C3, NOTE_E3, NOTE_G3, NOTE_C4, NOTE_E4};  // C - E - G
-int Csmajor[6] = {      0, NOTE_Cs3, NOTE_F3, NOTE_Gs3, NOTE_Cs4, NOTE_F4};  // C - E - G
+int Csmajor[6] = {      0, NOTE_Cs3, NOTE_F3, NOTE_Gs3, NOTE_Cs4, NOTE_F4};
 int Dmajor[6] = {      0,       0, NOTE_D3, NOTE_A3, NOTE_D4, NOTE_Fs4}; // D - F# - A
-int Dsmajor[6] = {      0,       0, NOTE_Ds3, NOTE_As3, NOTE_Ds4, NOTE_G4}; // D - F# - A
+int Dsmajor[6] = {      0,       0, NOTE_Ds3, NOTE_As3, NOTE_Ds4, NOTE_G4};
 int Emajor[6] = {NOTE_E2, NOTE_B2, NOTE_E3, NOTE_Gs3,NOTE_B3, NOTE_E4};  // E - G# - B
 int Fmajor[6] = {      0, NOTE_A2, NOTE_F3, NOTE_A3, NOTE_C4, NOTE_F4};  // F - A - C
-int Fsmajor[6] = {      0, NOTE_As2, NOTE_Fs3, NOTE_As3, NOTE_Cs4, NOTE_Fs4};  // F - A - C
+int Fsmajor[6] = {      0, NOTE_As2, NOTE_Fs3, NOTE_As3, NOTE_Cs4, NOTE_Fs4};  
 int Gmajor[6] = {NOTE_G2, NOTE_B2, NOTE_D3, NOTE_G3, NOTE_B3, NOTE_E4};  // G - B - D
-int Gsmajor[6] = {NOTE_Gs2, NOTE_C3, NOTE_Ds3, NOTE_Gs3, NOTE_C4, NOTE_F4};  // G - B - D
+int Gsmajor[6] = {NOTE_Gs2, NOTE_C3, NOTE_Ds3, NOTE_Gs3, NOTE_C4, NOTE_F4};  
 int Amajor[6] = {      0, NOTE_A2, NOTE_E3, NOTE_A3, NOTE_Cs4,NOTE_E4};  // A - C# - E
 int Asmajor[6] = {      0, NOTE_As2, NOTE_F3, NOTE_As3, NOTE_D4,NOTE_F4};  // A - C# - E
 int Bmajor[6] = {      0, NOTE_C4, NOTE_G3,NOTE_C3, NOTE_E4,NOTE_G4}; // B - D# - F#
