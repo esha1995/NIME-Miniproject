@@ -54,7 +54,7 @@ void loop() {
   delay(30);
     // If a button was just pressed or released...
     finger_delay = map(analogRead(delayPin), 1023, 0, 0, 150); // reading delay pn
-    randomVal = map(analogRead(randomPin), 1023, 0, 0, 50); // velocity randomization pn
+    randomVal = map(analogRead(randomPin), 1023, 0, 0, 70); // velocity randomization pn
     octaveVal = map(analogRead(octavePin), 1023, 0, 0, 2); // octave control pn
 
     if(chordPressed){
@@ -68,7 +68,7 @@ void loop() {
       // go through every button
 
       for (uint8_t i=0; i<numKeys; i++) {
-        if(i == mapping[12]) {
+        if(mapping[i] == mapping[12]) {
           if(trellis.justPressed(mapping[12]) && changeChord == false) {
             changeChord = true;
           } 
@@ -76,7 +76,7 @@ void loop() {
             changeChord = false;
           }
         } 
-        else if(i == mapping[13]) {
+        else if(mapping[i] == mapping[13]) {
           if(trellis.justPressed(mapping[13]) && majorMinor == false) {
             majorMinor = true; 
           } 
@@ -85,7 +85,7 @@ void loop() {
               majorMinor = false;
           }
         } 
-        else if(i == mapping[14]) {
+        else if(mapping[i] == mapping[14]) {
           if(trellis.justPressed(mapping[14]) && complexityMode == false) {
             complexityMode = true;
           } 
@@ -163,7 +163,7 @@ void playChord(int *chord, int delayValue, int randomVal, int octaveVal)
 
   if(complexity > 0)
   {
-    if(majorMinor) 
+    if(chord[3] == 0) 
     {
       if(complexity == 1)
       {
@@ -186,7 +186,7 @@ void playChord(int *chord, int delayValue, int randomVal, int octaveVal)
           usbMIDI.sendNoteOn(fifthNote, velocity5, channel);
       }
     }
-    else
+    if(chord[3] == 1)
     {
       if(complexity == 1)
       {
@@ -212,6 +212,8 @@ void playChord(int *chord, int delayValue, int randomVal, int octaveVal)
     
   }
 
+  delay(delayValue);
+
   
 }
 
@@ -230,7 +232,7 @@ void stopChord(int *chord, int octaveVal)
 
   if(complexity > 0)
   {
-    if(majorMinor) 
+    if(chord[3] == 0) 
     {
       if(complexity == 1)
       {
@@ -246,7 +248,7 @@ void stopChord(int *chord, int octaveVal)
           usbMIDI.sendNoteOff(fifthNote, 0, channel);
       }
     }
-    else
+    if(chord[3] == 1)
     {
       if(complexity == 1)
       {
