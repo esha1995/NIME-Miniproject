@@ -21,12 +21,14 @@ int channel = 1;
 float finger_delay = 10;
 bool chordReleased = false;
 bool changeChord = false;
-bool inversionMode = false;
+bool complexityMode = false;
 bool majorMinor = true;
 int chord = 0;
 bool chordPressed = false;
 int scale = 0;
 int mapping[16] = {15,11,7,3,14,10,6,2,13,9,5,1,12,8,4,0}; 
+int complexity = 0;
+
 
 void setup() {
   Serial.begin(9600);
@@ -84,11 +86,11 @@ void loop() {
           }
         } 
         else if(i == mapping[14]) {
-          if(trellis.justPressed(mapping[14]) && inversionMode == false) {
-            inversionMode = true;
+          if(trellis.justPressed(mapping[14]) && complexityMode == false) {
+            complexityMode = true;
           } 
-          else if(trellis.justPressed(mapping[14]) && inversionMode == true) {
-            inversionMode = false;
+          else if(trellis.justPressed(mapping[14]) && complexityMode == true) {
+            complexityMode = false;
           }
         }
         else {
@@ -102,11 +104,13 @@ void loop() {
                     Serial.println(i);
                   }
               }
-           } else if (inversionMode) {
-            if (mapping[i] == mapping[0] || mapping[i] == mapping[1]) {
+           } else if (complexityMode) {
+            if (mapping[i] == mapping[0] || mapping[i] == mapping[1] || mapping[i] == mapping[2]) {
               trellis.setLED(mapping[i]);
               if(trellis.justPressed(mapping[i])) {
-                
+                complexity = i;
+                complexityMode = false;
+                Serial.println(i);
                }
             }
            }
@@ -156,6 +160,59 @@ void playChord(int *chord, int delayValue, int randomVal, int octaveVal)
   int thirdNote = (octaveVal*12) + chord[2];
   int velocity3 = random(100-randomVal, 100);
   usbMIDI.sendNoteOn(thirdNote, velocity3, channel);
+
+  if(complexity > 0)
+  {
+    if(majorMinor) 
+    {
+      if(complexity == 1)
+      {
+        
+          int fourthNote = ((octaveVal*12) + chord[2]) + 4;
+          int velocity4 = random(100-randomVal, 100);
+          delay(delayValue);
+          usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
+      }
+      if(complexity == 2)
+      {
+          int fourthNote = ((octaveVal*12) + chord[2]) + 4;
+          int velocity4 = random(100-randomVal, 100);
+          delay(delayValue);
+          usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
+
+          int fifthNote = fourthNote + 3;
+          int velocity5 = random(100-randomVal, 100);
+          delay(delayValue);
+          usbMIDI.sendNoteOn(fifthNote, velocity5, channel);
+      }
+    }
+    else
+    {
+      if(complexity == 1)
+      {
+          int fourthNote = ((octaveVal*12) + chord[2]) + 3;
+          int velocity4 = random(100-randomVal, 100);
+          delay(delayValue);
+          usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
+      }
+      if(complexity == 2)
+      {
+          int fourthNote = ((octaveVal*12) + chord[2]) + 3;
+          int velocity4 = random(100-randomVal, 100);
+          delay(delayValue);
+          usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
+
+          int fifthNote = fourthNote + 4;
+          int velocity5 = random(100-randomVal, 100);
+          delay(delayValue);
+          usbMIDI.sendNoteOn(fifthNote, velocity5, channel);
+      }
+    }
+    
+    
+  }
+
+  
 }
 
 void stopChord(int *chord, int octaveVal) 
@@ -168,6 +225,46 @@ void stopChord(int *chord, int octaveVal)
 
   int thirdNote = (octaveVal*12) + chord[2];
   usbMIDI.sendNoteOff(thirdNote, 0, channel);
+
+
+
+  if(complexity > 0)
+  {
+    if(majorMinor) 
+    {
+      if(complexity == 1)
+      {
+          int fourthNote = ((octaveVal*12) + chord[2]) + 4;
+          usbMIDI.sendNoteOff(fourthNote, 0, channel);
+      }
+      if(complexity == 2)
+      {
+          int fourthNote = ((octaveVal*12) + chord[2]) + 4;
+          usbMIDI.sendNoteOff(fourthNote, 0, channel);
+
+          int fifthNote = fourthNote + 3;
+          usbMIDI.sendNoteOff(fifthNote, 0, channel);
+      }
+    }
+    else
+    {
+      if(complexity == 1)
+      {
+          int fourthNote = ((octaveVal*12) + chord[2]) + 3;
+          usbMIDI.sendNoteOff(fourthNote, 0, channel);
+      }
+      if(complexity == 2)
+      {
+          int fourthNote = ((octaveVal*12) + chord[2]) + 3;
+          usbMIDI.sendNoteOff(fourthNote, 0, channel);
+
+          int fifthNote = fourthNote + 4;
+          usbMIDI.sendNoteOff(fifthNote, 0, channel);
+      }
+    }
+    
+    
+  }
 }
 
 
