@@ -17,12 +17,13 @@ Adafruit_TrellisSet trellis =  Adafruit_TrellisSet(&matrix0);
 
 int channel = 1;
 float finger_delay = 10;
-
+bool chordReleased = false;
 bool changeChord = false;
 bool majorMinor = true;
-
+int chord = 0;
+bool chordPressed = false;
 int scale = 0;
-int mapping[16] = {15, 11, 7, 3,14,10,6,2,13,9,5,1,12,8,4,0}; 
+int mapping[16] = {15,11,7,3,14,10,6,2,13,9,5,1,12,8,4,0}; 
 
 void setup() {
   Serial.begin(9600);
@@ -49,6 +50,11 @@ void loop() {
     // If a button was just pressed or released...
     finger_delay = map(analogRead(delayPin), 1023, 0, 0,150); // reading delay pn
     randomVal = map(analogRead(randomPin), 1023,0,0,50);
+
+    if(chordPressed){
+      playChord(selectChord3(chord, 100, majorMinor, scale), finger_delay, randomVal);
+      chordPressed = false;
+     }
     
     trellis.setLED(12);
     if (trellis.readSwitches()) {
@@ -88,13 +94,15 @@ void loop() {
             if(mapping[i] != mapping[14] && mapping[i] != mapping[15] && mapping[i] != mapping[13] && mapping[i] != mapping[12]) {
             trellis.clrLED(mapping[i]);
               if (trellis.justPressed(mapping[i])) {
-                Serial.println(i);
-                playChord(selectChord3(i, 100, majorMinor, scale), finger_delay, randomVal);
+                // Serial.println(i);
+                chordPressed = true;
+                chord = i;
                 trellis.setLED(mapping[i]);
                } 
                 // if it was released, turn it off
               if (trellis.justReleased(mapping[i])) {
-                stopChord(selectChord(i, 100, majorMinor, scale));
+                
+                stopChord(selectChord3(i, 0, majorMinor, scale)); 
                 trellis.clrLED(mapping[i]);
               }
             }
@@ -109,16 +117,14 @@ void loop() {
     else{
       trellis.clrLED(mapping[13]);
     }
-     
     
-    trellis.writeDisplay();
+    trellis.writeDisplay();  
   }
 
 void playChord(int *chord, int delayValue, int randomVal) 
 {
   
   int velocity1 = random(100-randomVal, 100);
-  
   usbMIDI.sendNoteOn(chord[0], velocity1, channel);
   delay(delayValue);
   int velocity2 = random(100-randomVal, 100);
@@ -1294,8 +1300,540 @@ int * selectChord3(int i, float velocity, bool isMajor, int scale) {
           return Cmaj;
           break;
         }
-  }
-  else {
-    return Cmaj;
+  } else {
+    switch (scale) {
+      case 0:
+        switch (i) {
+          case 0:
+            return Cmin;
+            break;
+          case 1:
+            return Ddim;
+            break;
+          case 2:
+            return Dsmaj;
+            break;
+          case 3:
+            return Fmin;
+            break;
+          case 4:
+            return Gmin;
+            break;
+          case 5:
+            return Gsmaj;
+            break;
+          case 6:
+            return Asmaj;
+            break; 
+          case 7:
+            return Cmin2;
+            break;
+          case 8: 
+            return Ddim2; 
+            break;
+          case 9:
+            return Dsmaj2;
+            break;
+          case 10:
+            return Fmin2;
+            break;
+          case 11:
+            return Gmin2;
+            break;
+          default:
+            return Cmin;
+            break;
+        }
+        
+        break;
+      case 1:
+          switch (i) {
+          case 0:
+            return Csmin;
+            break;
+          case 1:
+            return Dsdim;
+            break;
+          case 2:
+            return Emaj;
+            break;
+          case 3:
+            return Fsmin;
+            break;
+          case 4:
+            return Gsmin;
+            break;
+          case 5:
+            return Amaj;
+            break;
+          case 6:
+            return Bmaj;
+            break; 
+          case 7:
+            return Csmin2;
+            break;
+          case 8: 
+            return Dsdim2; 
+            break;
+          case 9:
+            return Fsmin2;
+            break;
+          case 10:
+            return Gsmin2;
+            break;
+          case 11:
+            return Gmin2;
+            break;
+          default:
+            return Cmin;
+            break;
+        }
+      
+        break;
+      case 2:
+        switch (i) {
+          case 0:
+            return Dmin;
+            break;
+          case 1:
+            return Edim;
+            break;
+          case 2:
+            return Fmaj;
+            break;
+          case 3:
+            return Gmin;
+            break;
+          case 4:
+            return Amin;
+            break;
+          case 5:
+            return Asmaj;
+            break;
+          case 6:
+            return Cmaj;
+            break; 
+          case 7:
+            return Dmin2;
+            break;
+          case 8: 
+            return Edim2; 
+            break;
+          case 9:
+            return Fmaj2;
+            break;
+          case 10:
+            return Gmin2;
+            break;
+          case 11:
+            return Amin2;
+            break;
+          default:
+            return Dmin;
+            break;
+        }
+        
+        break;
+      case 3:
+        switch (i) {
+            case 0:
+              return Dsmin;
+              break;
+            case 1:
+              return Fdim;
+              break;
+            case 2:
+              return Fsmaj;
+              break;
+            case 3:
+              return Gsmin;
+              break;
+            case 4:
+              return Asmin;
+              break;
+            case 5:
+              return Bmaj;
+              break;
+            case 6:
+              return Csmaj;
+              break; 
+            case 7:
+              return Dsmin2;
+              break;
+            case 8: 
+              return Fdim2; 
+              break;
+            case 9:
+              return Fsmaj2;
+              break;
+            case 10:
+              return Gsmin2;
+              break;
+            case 11:
+              return Asmin2;
+              break;
+            default:
+              return Dsmin;
+              break;
+          }
+          
+        break;
+      case 4:
+          switch (i) {
+            case 0:
+              return Emin;
+              break;
+            case 1:
+              return Fsdim;
+              break;
+            case 2:
+              return Gmaj;
+              break;
+            case 3:
+              return Amin;
+              break;
+            case 4:
+              return Bmin;
+              break;
+            case 5:
+              return Cmaj;
+              break;
+            case 6:
+              return Dmaj;
+              break; 
+            case 7:
+              return Emin2;
+              break;
+            case 8: 
+              return Fsdim2; 
+              break;
+            case 9:
+              return Gmaj2;
+              break;
+            case 10:
+              return Amin2;
+              break;
+            case 11:
+              return Bmin2;
+              break;
+            default:
+              return Emin;
+              break;
+          }
+          
+        break;
+      case 5:
+          switch (i) {
+            case 0:
+              return Fmin;
+              break;
+            case 1:
+              return Gdim;
+              break;
+            case 2:
+              return Gsmaj;
+              break;
+            case 3:
+              return Asmin;
+              break;
+            case 4:
+              return Cmin;
+              break;
+            case 5:
+              return Csmaj;
+              break;
+            case 6:
+              return Dsmaj;
+              break; 
+            case 7:
+              return Fmin2;
+              break;
+            case 8: 
+              return Gdim2; 
+              break;
+            case 9:
+              return Gsmaj2;
+              break;
+            case 10:
+              return Asmin2;
+              break;
+            case 11:
+              return Cmin2;
+              break;
+            default:
+              return Fmin;
+              break;
+          }
+          
+        break;
+      case 6:
+          switch (i) {
+            case 0:
+              return Fsmin;
+              break;
+            case 1:
+              return Gsdim;
+              break;
+            case 2:
+              return Amaj;
+              break;
+            case 3:
+              return Bmin;
+              break;
+            case 4:
+              return Csmin;
+              break;
+            case 5:
+              return Dmaj;
+              break;
+            case 6:
+              return Emaj;
+              break; 
+            case 7:
+              return Fsmin2;
+              break;
+            case 8: 
+              return Gsdim2; 
+              break;
+            case 9:
+              return Amaj2;
+              break;
+            case 10:
+              return Bmin2;
+              break;
+            case 11:
+              return Csmin2;
+              break;
+            default:
+              return Fsmin;
+              break;
+          }
+          
+        break;
+      case 7:
+          switch (i) {
+            case 0:
+              return Gmin;
+              break;
+            case 1:
+              return Adim;
+              break;
+            case 2:
+              return Asmaj;
+              break;
+            case 3:
+              return Cmin;
+              break;
+            case 4:
+              return Dmin;
+              break;
+            case 5:
+              return Dsmaj;
+              break;
+            case 6:
+              return Fmaj;
+              break; 
+            case 7:
+              return Gmin2;
+              break;
+            case 8: 
+              return Adim2; 
+              break;
+            case 9:
+              return Asmaj2;
+              break;
+            case 10:
+              return Cmin2;
+              break;
+            case 11:
+              return Dmin2;
+              break;
+            default:
+              return Gmin;
+              break;
+          }
+          
+        break;
+      case 8:
+          switch (i) {
+            case 0:
+              return Gsmin;
+              break;
+            case 1:
+              return Asdim;
+              break;
+            case 2:
+              return Bmaj;
+              break;
+            case 3:
+              return Csmin;
+              break;
+            case 4:
+              return Dsmin;
+              break;
+            case 5:
+              return Emaj;
+              break;
+            case 6:
+              return Fsmaj;
+              break; 
+            case 7:
+              return Gsmin2;
+              break;
+            case 8: 
+              return Asdim2; 
+              break;
+            case 9:
+              return Bmaj;
+              break;
+            case 10:
+              return Csmin2;
+              break;
+            case 11:
+              return Dsmin2;
+              break;
+            default:
+              return Gsmin;
+              break;
+          }
+          
+        break;
+
+      case 9:
+          switch (i) {
+            case 0:
+              return Amin;
+              break;
+            case 1:
+              return Bdim;
+              break;
+            case 2:
+              return Cmaj;
+              break;
+            case 3:
+              return Dmin;
+              break;
+            case 4:
+              return Emin;
+              break;
+            case 5:
+              return Fmaj;
+              break;
+            case 6:
+              return Gmaj;
+              break; 
+            case 7:
+              return Amin;
+              break;
+            case 8: 
+              return Bdim2; 
+              break;
+            case 9:
+              return Cmaj2;
+              break;
+            case 10:
+              return Dmin2;
+              break;
+            case 11:
+              return Emin2;
+              break;
+            default:
+              return Amin;
+              break;
+          }
+          
+        break;
+      case 10:
+          switch (i) {
+            case 0:
+              return Asmin;
+              break;
+            case 1:
+              return Cdim;
+              break;
+            case 2:
+              return Csmaj;
+              break;
+            case 3:
+              return Dsmin;
+              break;
+            case 4:
+              return Fmin;
+              break;
+            case 5:
+              return Fsmaj;
+              break;
+            case 6:
+              return Gsmaj;
+              break; 
+            case 7:
+              return Asmin2;
+              break;
+            case 8: 
+              return Cdim2; 
+              break;
+            case 9:
+              return Csmaj2;
+              break;
+            case 10:
+              return Dsmin2;
+              break;
+            case 11:
+              return Fmin2;
+              break;
+            default:
+              return Asmin;
+              break;
+          }
+          
+        break;
+      case 11:
+          switch (i) {
+            case 0:
+              return Bmin;
+              break;
+            case 1:
+              return Csdim;
+              break;
+            case 2:
+              return Dmaj;
+              break;
+            case 3:
+              return Emin;
+              break;
+            case 4:
+              return Fsmin;
+              break;
+            case 5:
+              return Gmaj;
+              break;
+            case 6:
+              return Amaj;
+              break; 
+            case 7:
+              return Bmin2;
+              break;
+            case 8: 
+              return Csdim2; 
+              break;
+            case 9:
+              return Dmaj2;
+              break;
+            case 10:
+              return Emin2;
+              break;
+            case 11:
+              return Fsmin2;
+              break;
+            default:
+              return Bmin;
+              break;
+          }
+          
+        break;
+      default:
+        return Cmaj;
+        break;
+    }
   }
 }
