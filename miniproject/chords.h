@@ -1,8 +1,11 @@
-
-#define NOTE_E2   40
-#define NOTE_F2   41
-#define NOTE_Fs2  42
-#define NOTE_G2   43
+#define NOTE_C2  36
+#define NOTE_Cs2 37
+#define NOTE_D2  38
+#define NOTE_DS2 39
+#define NOTE_E2  40
+#define NOTE_F2  41
+#define NOTE_Fs2 42
+#define NOTE_G2  43
 #define NOTE_Gs2 44
 #define NOTE_A2  45
 #define NOTE_As2 46
@@ -60,13 +63,13 @@ int Csmaj[3]  =  {NOTE_Cs3, NOTE_F3, NOTE_Gs3};     //  C# - F  - G#
 int Dmaj[3]   =  {NOTE_D3, NOTE_Fs3, NOTE_A3};      //  D  - F# - A
 int Dsmaj[3]  =  {NOTE_Ds3, NOTE_G3, NOTE_As3};     //  D# - G  - A#
 int Emaj[3]   =  {NOTE_E3, NOTE_Gs3, NOTE_B3};      //  E  - G# - B
-int Fmaj[3]   =  {NOTE_F3, NOTE_A3, NOTE_C4};       //  F  - A  - C
-int Fsmaj[3]  =  {NOTE_Fs3, NOTE_As3, NOTE_Cs4};    //  F# - A# - C
-int Gmaj[3]   =  {NOTE_G3, NOTE_B3, NOTE_D4};       //  G  - B  - D
-int Gsmaj[3]  =  {NOTE_Gs3, NOTE_C4, NOTE_Ds4};     //  G# - C  - D#
-int Amaj[3]   =  {NOTE_A3, NOTE_Cs4, NOTE_E4};      //  A  - C# - E
-int Asmaj[3]  =  {NOTE_As3, NOTE_D4, NOTE_F4};      //  A# - D  - F
-int Bmaj[3]   =  {NOTE_B3, NOTE_G4, NOTE_Fs4};      //  B  - D# - F#
+int Fmaj[3]   =  {NOTE_F3, NOTE_A3, NOTE_C3};       //  F  - A  - C
+int Fsmaj[3]  =  {NOTE_Fs3, NOTE_As3, NOTE_Cs3};    //  F# - A# - C
+int Gmaj[3]   =  {NOTE_G3, NOTE_B3, NOTE_D3};       //  G  - B  - D
+int Gsmaj[3]  =  {NOTE_Gs3, NOTE_C4, NOTE_Ds3};     //  G# - C  - D#
+int Amaj[3]   =  {NOTE_A3, NOTE_Cs4, NOTE_E3};      //  A  - C# - E
+int Asmaj[3]  =  {NOTE_As3, NOTE_D4, NOTE_F3};      //  A# - D  - F
+int Bmaj[3]   =  {NOTE_B3, NOTE_G4, NOTE_Fs3};      //  B  - D# - F#
 
 // Major 2
 int Cmaj2[3]  =  {NOTE_C4, NOTE_E4, NOTE_G4};       //  C  - E  - G
@@ -74,13 +77,13 @@ int Csmaj2[3] =  {NOTE_Cs4, NOTE_F4, NOTE_Gs4};     //  C# - F  - G#
 int Dmaj2[3]  =  {NOTE_D4, NOTE_Fs4, NOTE_A4};      //  D  - F# - A
 int Dsmaj2[3] =  {NOTE_Ds4, NOTE_G4, NOTE_As4};     //  D# - G  - A#
 int Emaj2[3]  =  {NOTE_E4, NOTE_Gs4, NOTE_B4};      //  E  - G# - B
-int Fmaj2[3]  =  {NOTE_F4, NOTE_A4, NOTE_C5};       //  F  - A  - C
-int Fsmaj2[3] =  {NOTE_Fs4, NOTE_As4, NOTE_Cs5};    //  F# - A# - C
-int Gmaj2[3]  =  {NOTE_G4, NOTE_B4, NOTE_D5};       //  G  - B  - D
-int Gsmaj2[3] =  {NOTE_Gs4, NOTE_C5, NOTE_Ds5};     //  G# - C  - D#
-int Amaj2[3]  =  {NOTE_A4, NOTE_Cs5, NOTE_E5};      //  A  - C# - E
-int Asmaj2[3] =  {NOTE_As4, NOTE_D5, NOTE_F5};      //  A# - D  - F
-int Bmaj2[3]  =  {NOTE_B4, NOTE_G5, NOTE_Fs5};      //  B  - D# - F#
+int Fmaj2[3]  =  {NOTE_F4, NOTE_A4, NOTE_C4};       //  F  - A  - C
+int Fsmaj2[3] =  {NOTE_Fs4, NOTE_As4, NOTE_Cs4};    //  F# - A# - C
+int Gmaj2[3]  =  {NOTE_G4, NOTE_B4, NOTE_D4};       //  G  - B  - D
+int Gsmaj2[3] =  {NOTE_Gs4, NOTE_C5, NOTE_Ds4};     //  G# - C  - D#
+int Amaj2[3]  =  {NOTE_A4, NOTE_Cs5, NOTE_E4};      //  A  - C# - E
+int Asmaj2[3] =  {NOTE_As4, NOTE_D5, NOTE_F4};      //  A# - D  - F
+int Bmaj2[3]  =  {NOTE_B4, NOTE_G5, NOTE_Fs4};      //  B  - D# - F#
 
 /// Minor
 int Cmin[3]   =  {NOTE_C3, NOTE_Ds3, NOTE_G3};      //  C  - D# - G
@@ -88,13 +91,13 @@ int Csmin[3]  =  {NOTE_Cs3, NOTE_E3, NOTE_Gs3};     //  C# - E  - G#
 int Dmin[3]   =  {NOTE_D3, NOTE_F3, NOTE_A3};       //  D  - F  - A
 int Dsmin[3]  =  {NOTE_Ds3, NOTE_Fs3, NOTE_As3};    //  D# - F# - A#
 int Emin[3]   =  {NOTE_E3, NOTE_G3, NOTE_B3};       //  E  - G  - B
-int Fmin[3]   =  {NOTE_F3, NOTE_Gs3, NOTE_C4};      //  F  - G# - C
-int Fsmin[3]  =  {NOTE_Fs3, NOTE_A3, NOTE_Cs4};     //  F# - A  - C
-int Gmin[3]   =  {NOTE_G3, NOTE_As3, NOTE_D4};      //  G  - A# - D
-int Gsmin[3]  =  {NOTE_Gs3, NOTE_B3, NOTE_Ds4};     //  G# - B  - D#
-int Amin[3]   =  {NOTE_A3, NOTE_C4, NOTE_E4};       //  A  - C  - E
-int Asmin[3]  =  {NOTE_As3, NOTE_Cs4, NOTE_F4};     //  A# - C# - F
-int Bmin[3]   =  {NOTE_B3, NOTE_D4, NOTE_Fs4};      //  B  - D  - F#
+int Fmin[3]   =  {NOTE_F3, NOTE_Gs3, NOTE_C3};      //  F  - G# - C
+int Fsmin[3]  =  {NOTE_Fs3, NOTE_A3, NOTE_Cs3};     //  F# - A  - C
+int Gmin[3]   =  {NOTE_G3, NOTE_As3, NOTE_D3};      //  G  - A# - D
+int Gsmin[3]  =  {NOTE_Gs3, NOTE_B3, NOTE_Ds3};     //  G# - B  - D#
+int Amin[3]   =  {NOTE_A3, NOTE_C4, NOTE_E3};       //  A  - C  - E
+int Asmin[3]  =  {NOTE_As3, NOTE_Cs4, NOTE_F3};     //  A# - C# - F
+int Bmin[3]   =  {NOTE_B3, NOTE_D4, NOTE_Fs3};      //  B  - D  - F#
 
 /// Minor 2
 int Cmin2[3]   =  {NOTE_C4, NOTE_Ds4, NOTE_G4};      //  C  - D# - G
@@ -102,13 +105,13 @@ int Csmin2[3]  =  {NOTE_Cs4, NOTE_E4, NOTE_Gs4};     //  C# - E - G#
 int Dmin2[3]   =  {NOTE_D4, NOTE_F4, NOTE_A4};       //  D  - F - A
 int Dsmin2[3]  =  {NOTE_Ds4, NOTE_Fs4, NOTE_As4};    //  D# - F# - A#
 int Emin2[3]   =  {NOTE_E4, NOTE_G4, NOTE_B4};       //  E  - G - B
-int Fmin2[3]   =  {NOTE_F4, NOTE_Gs4, NOTE_C5};      //  F  - G# - C
-int Fsmin2[3]  =  {NOTE_Fs4, NOTE_A4, NOTE_Cs5};     //  F# - A - C
-int Gmin2[3]   =  {NOTE_G4, NOTE_As4, NOTE_D5};      //  G  - A# - D
-int Gsmin2[3]  =  {NOTE_Gs4, NOTE_B4, NOTE_Ds5};     //  G# - B - D#
-int Amin2[3]   =  {NOTE_A4, NOTE_C5, NOTE_E5};       //  A  - C - E
-int Asmin2[3]  =  {NOTE_As4, NOTE_Cs5, NOTE_F5};     //  A# - C# - F
-int Bmin2[3]   =  {NOTE_B4, NOTE_D5, NOTE_Fs5};      //  B  - D - F#
+int Fmin2[3]   =  {NOTE_F4, NOTE_Gs4, NOTE_C4};      //  F  - G# - C
+int Fsmin2[3]  =  {NOTE_Fs4, NOTE_A4, NOTE_Cs4};     //  F# - A - C
+int Gmin2[3]   =  {NOTE_G4, NOTE_As4, NOTE_D4};      //  G  - A# - D
+int Gsmin2[3]  =  {NOTE_Gs4, NOTE_B4, NOTE_Ds4};     //  G# - B - D#
+int Amin2[3]   =  {NOTE_A4, NOTE_C5, NOTE_E4};       //  A  - C - E
+int Asmin2[3]  =  {NOTE_As4, NOTE_Cs5, NOTE_F4};     //  A# - C# - F
+int Bmin2[3]   =  {NOTE_B4, NOTE_D5, NOTE_Fs4};      //  B  - D - F#
 
 /// Diminished
 int Cdim[3]   =  {NOTE_C3, NOTE_Ds3, NOTE_Fs3};     //  C  - D# - F#
@@ -117,11 +120,11 @@ int Ddim[3]   =  {NOTE_D3, NOTE_F3, NOTE_Gs3};      //  D  - F  - G#
 int Dsdim[3]  =  {NOTE_Ds3, NOTE_Fs3, NOTE_A3};     //  D# - F# - A
 int Edim[3]   =  {NOTE_E3, NOTE_G3, NOTE_As3};      //  E  - G  - A#
 int Fdim[3]   =  {NOTE_F3, NOTE_Gs3, NOTE_B3};      //  F  - G# - B
-int Fsdim[3]  =  {NOTE_Fs3, NOTE_A3, NOTE_C4};      //  F# - A  - C
-int Gdim[3]   =  {NOTE_G3, NOTE_As3, NOTE_Cs4};     //  G  - A# - C#
-int Gsdim[3]  =  {NOTE_Gs3, NOTE_B3, NOTE_D4};      //  G# - B  - D
-int Adim[3]   =  {NOTE_A3, NOTE_C4, NOTE_Ds4};      //  A  - C  - D#
-int Asdim[3]  =  {NOTE_As3, NOTE_Cs4, NOTE_E4};     //  A# - C# - E
+int Fsdim[3]  =  {NOTE_Fs3, NOTE_A3, NOTE_C3};      //  F# - A  - C
+int Gdim[3]   =  {NOTE_G3, NOTE_As3, NOTE_Cs3};     //  G  - A# - C#
+int Gsdim[3]  =  {NOTE_Gs3, NOTE_B3, NOTE_D3};      //  G# - B  - D
+int Adim[3]   =  {NOTE_A3, NOTE_C4, NOTE_Ds3};      //  A  - C  - D#
+int Asdim[3]  =  {NOTE_As3, NOTE_Cs4, NOTE_E3};     //  A# - C# - E
 int Bdim[3]   =  {NOTE_B3, NOTE_D4, NOTE_F4};       //  B  - D  - F
 
 /// Diminished 2
@@ -131,9 +134,9 @@ int Ddim2[3]   =  {NOTE_D4, NOTE_F4, NOTE_Gs4};      //  D  - F  - G#
 int Dsdim2[3]  =  {NOTE_Ds4, NOTE_Fs4, NOTE_A4};     //  D# - F# - A
 int Edim2[3]   =  {NOTE_E4, NOTE_G4, NOTE_As4};      //  E  - G  - A#
 int Fdim2[3]   =  {NOTE_F4, NOTE_Gs4, NOTE_B4};      //  F  - G# - B
-int Fsdim2[3]  =  {NOTE_Fs4, NOTE_A4, NOTE_C5};      //  F# - A  - C
-int Gdim2[3]   =  {NOTE_G4, NOTE_As4, NOTE_Cs5};     //  G  - A# - C#
-int Gsdim2[3]  =  {NOTE_Gs4, NOTE_B4, NOTE_D5};      //  G# - B  - D
-int Adim2[3]   =  {NOTE_A4, NOTE_C5, NOTE_Ds5};      //  A  - C  - D#
-int Asdim2[3]  =  {NOTE_As4, NOTE_Cs5, NOTE_E5};     //  A# - C# - E
-int Bdim2[3]   =  {NOTE_B4, NOTE_D5, NOTE_F5};       //  B  - D  - F
+int Fsdim2[3]  =  {NOTE_Fs4, NOTE_A4, NOTE_C4};      //  F# - A  - C
+int Gdim2[3]   =  {NOTE_G4, NOTE_As4, NOTE_Cs4};     //  G  - A# - C#
+int Gsdim2[3]  =  {NOTE_Gs4, NOTE_B4, NOTE_D4};      //  G# - B  - D
+int Adim2[3]   =  {NOTE_A4, NOTE_C5, NOTE_Ds4};      //  A  - C  - D#
+int Asdim2[3]  =  {NOTE_As4, NOTE_Cs5, NOTE_E4};     //  A# - C# - E
+int Bdim2[3]   =  {NOTE_B4, NOTE_D5, NOTE_F4};       //  B  - D  - F
