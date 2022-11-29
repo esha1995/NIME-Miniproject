@@ -4,31 +4,33 @@
 
 #define NUMTRELLIS 1
 #define numKeys (NUMTRELLIS * 16)
-#define INTPIN A2
-#define delayPin A0
-#define randomPin A17
-#define octavePin A16
+#define INTPIN A6
+#define delayPin A8
+#define randomPin A9
+#define octavePin A7
+
+Adafruit_Trellis matrix0 = Adafruit_Trellis();
+Adafruit_TrellisSet trellis =  Adafruit_TrellisSet(&matrix0);
 
 int randomVal;
 int octaveVal;
 int midiVal1;
 int midiVal2;
-
-Adafruit_Trellis matrix0 = Adafruit_Trellis();
-Adafruit_TrellisSet trellis =  Adafruit_TrellisSet(&matrix0);
-
 int channel = 1;
+int chord = 0;
+int scale = 0;
+int complexity = 0;
+//int mapping[16] = {15,11,7,3,14,10,6,2,13,9,5,1,12,8,4,0};
+int mapping[16] = {3,2,1,0,7,6,5,4,11,10,9,8,15,14,13,12};
+int invertionMode = 0;
+
 float finger_delay = 10;
+
 bool chordReleased = false;
 bool changeChord = false;
 bool complexityMode = false;
 bool majorMinor = true;
-int chord = 0;
 bool chordPressed = false;
-int scale = 0;
-int mapping[16] = {15,11,7,3,14,10,6,2,13,9,5,1,12,8,4,0}; 
-int complexity = 0;
-
 
 void setup() {
   Serial.begin(9600);
@@ -58,12 +60,12 @@ void loop() {
     octaveVal = map(analogRead(octavePin), 1023, 0, 0, 2); // octave control pn
 
     if(chordPressed){
-      playChord(selectChord(chord, 100, majorMinor, scale), finger_delay, randomVal, octaveVal);
+      playChord(selectChord(chord, 100, majorMinor, scale), finger_delay, randomVal, octaveVal, invertionMode);
       chordPressed = false;
       Serial.print(octaveVal);
      }
      
-    trellis.setLED(12);
+    trellis.setLED(mapping[12]);
     if (trellis.readSwitches()) {
       // go through every button
 
@@ -92,8 +94,17 @@ void loop() {
           else if(trellis.justPressed(mapping[14]) && complexityMode == true) {
             complexityMode = false;
           }
-        }
-        else {
+        } else if (mapping[i] == mapping[15]) {
+          if(trellis.justPressed(mapping[15])) {
+            if (invertionMode == 3) {
+              Serial.println(invertionMode);
+              invertionMode = 0;
+            } else {
+              Serial.println(invertionMode);
+              invertionMode++;
+            }
+          }
+        } else {
           // if in change scale mode
           if(changeChord) {
               if(mapping[i] != mapping[14] && mapping[i] != mapping[15] && mapping[i] != mapping[13] && mapping[i] != mapping[12]) {
@@ -113,8 +124,7 @@ void loop() {
                 Serial.println(i);
                }
             }
-           }
-           else {
+           } else {
             if(mapping[i] != mapping[14] && mapping[i] != mapping[15] && mapping[i] != mapping[13] && mapping[i] != mapping[12]) {
             trellis.clrLED(mapping[i]);
               if (trellis.justPressed(mapping[i])) {
@@ -145,90 +155,101 @@ void loop() {
     trellis.writeDisplay();  
   }
 
-void playChord(int *chord, int delayValue, int randomVal, int octaveVal) 
-{
+void playChord(int *chord, int delayValue, int randomVal, int octaveVal, int invertionMode) {  
   int velocity1 = random(100-randomVal, 100);
   int rootNote = (octaveVal*12) + chord[0];
+  if (invertionMode == 1) {
+    rootNote = rootNote + 12;    
+  }
   usbMIDI.sendNoteOn(rootNote, velocity1, channel);
   delay(delayValue);
   
   int velocity2 = random(100-randomVal, 100);
   int secondNote = (octaveVal*12) + chord[1];
+  if (invertionMode == 2) {
+    secondNote = secondNote + 12;
+  }
+  
   usbMIDI.sendNoteOn(secondNote, velocity2, channel);
   delay(delayValue);
   
-  int thirdNote = (octaveVal*12) + chord[2];
   int velocity3 = random(100-randomVal, 100);
+  int thirdNote = (octaveVal*12) + chord[2];
+  if (invertionMode == 3) {
+    thirdNote = thirdNote - 12;
+  }
+  
   usbMIDI.sendNoteOn(thirdNote, velocity3, channel);
-
-  if(complexity > 0)
-  {
-    if(chord[3] == 0) 
-    {
-      if(complexity == 1)
-      {
-        
-          int fourthNote = ((octaveVal*12) + chord[2]) + 4;
-          int velocity4 = random(100-randomVal, 100);
-          delay(delayValue);
-          usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
-      }
-      if(complexity == 2)
-      {
-          int fourthNote = ((octaveVal*12) + chord[2]) + 4;
-          int velocity4 = random(100-randomVal, 100);
-          delay(delayValue);
-          usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
-
-          int fifthNote = fourthNote + 3;
-          int velocity5 = random(100-randomVal, 100);
-          delay(delayValue);
-          usbMIDI.sendNoteOn(fifthNote, velocity5, channel);
-      }
-    }
-    if(chord[3] == 1)
-    {
-      if(complexity == 1)
-      {
-          int fourthNote = ((octaveVal*12) + chord[2]) + 3;
-          int velocity4 = random(100-randomVal, 100);
-          delay(delayValue);
-          usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
-      }
-      if(complexity == 2)
-      {
-          int fourthNote = ((octaveVal*12) + chord[2]) + 3;
-          int velocity4 = random(100-randomVal, 100);
-          delay(delayValue);
-          usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
-
-          int fifthNote = fourthNote + 4;
-          int velocity5 = random(100-randomVal, 100);
-          delay(delayValue);
-          usbMIDI.sendNoteOn(fifthNote, velocity5, channel);
-      }
-    }
-    
-    
+  
+  if(complexity > 0) {
+    playComplexityNote(chord, complexity, delayValue);
   }
 
   delay(delayValue);
-
-  
 }
 
-void stopChord(int *chord, int octaveVal) 
-{ 
+void playComplexityNote(int *chord, int complexity, int delayValue) {
+  if (chord[3] == 0) {
+    if(complexity == 1) {
+        int fourthNote = ((octaveVal*12) + chord[2]) + 4;
+        int velocity4 = random(100-randomVal, 100);
+        delay(delayValue);
+        usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
+    }
+    
+    if (complexity == 2) {
+        int fourthNote = ((octaveVal*12) + chord[2]) + 4;
+        int velocity4 = random(100-randomVal, 100);
+        delay(delayValue);
+        usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
+
+        int fifthNote = fourthNote + 3;
+        int velocity5 = random(100-randomVal, 100);
+        delay(delayValue);
+        usbMIDI.sendNoteOn(fifthNote, velocity5, channel);
+    }
+  }
+  
+  if (chord[3] == 1) {
+    if (complexity == 1) {
+        int fourthNote = ((octaveVal*12) + chord[2]) + 3;
+        int velocity4 = random(100-randomVal, 100);
+        delay(delayValue);
+        usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
+    }
+    
+    if (complexity == 2) {
+        int fourthNote = ((octaveVal*12) + chord[2]) + 3;
+        int velocity4 = random(100-randomVal, 100);
+        delay(delayValue);
+        usbMIDI.sendNoteOn(fourthNote, velocity4, channel);
+
+        int fifthNote = fourthNote + 4;
+        int velocity5 = random(100-randomVal, 100);
+        delay(delayValue);
+        usbMIDI.sendNoteOn(fifthNote, velocity5, channel);
+    }
+  }
+}
+
+void stopChord(int *chord, int octaveVal) {   
   int rootNote = (octaveVal*12) + chord[0];
+  if (invertionMode == 1) {
+    rootNote = rootNote + 12;    
+  }
   usbMIDI.sendNoteOff(rootNote, 0, channel);
 
   int secondNote = (octaveVal*12) + chord[1];
+  if (invertionMode == 2) {
+    secondNote = secondNote + 12;    
+  }
   usbMIDI.sendNoteOff(secondNote, 0, channel);
 
   int thirdNote = (octaveVal*12) + chord[2];
+  if (invertionMode == 3) {
+    thirdNote = thirdNote - 12;    
+  }
   usbMIDI.sendNoteOff(thirdNote, 0, channel);
-
-
 
   if(complexity > 0)
   {
@@ -263,10 +284,12 @@ void stopChord(int *chord, int octaveVal)
           int fifthNote = fourthNote + 4;
           usbMIDI.sendNoteOff(fifthNote, 0, channel);
       }
-    }
-    
-    
+    } 
   }
+}
+
+void stopComplexityNote() {
+  
 }
 
 
